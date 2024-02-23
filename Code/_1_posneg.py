@@ -1,6 +1,8 @@
 import pandas as pd
+from itertools import combinations
+from sklearn.utils import shuffle
 
-df=pd.read_csv('/storage_1/S4106037042/_1_9606_human/phsical/physical.txt', delimiter=' ')
+df=pd.read_csv('C:/Users/blues/Desktop/PPI/All_CSV/physical.txt', delimiter=' ')
 df_filtered = df[(df['experimental']>0) | (df['database']>0)]
 df_filtered=df_filtered.reset_index(drop=True)
 
@@ -27,8 +29,6 @@ for i in range(0, len(df_filtered['protein1'])):
         nonrpt_prot.append(df_filtered['protein1'][i])
         cnt+=1
 
-from itertools import combinations
-
 def combines(pro, r):
     return list(combinations(pro, r))
 
@@ -42,7 +42,6 @@ rd_smp['protein2']=rd_smp['protein2'].replace(r'\D', r'', regex=True)
 neg = pd.concat([pos, rd_smp])
 neg = neg.drop_duplicates(keep=False)
 
-from sklearn.utils import shuffle
 pos=shuffle(pos).reset_index(drop=True)
 for index, row in pos.iterrows():
     try:
@@ -71,3 +70,4 @@ neg.insert(2, column="interact", value=0)
 all_prot=pd.concat([pos, neg])
 all_prot=shuffle(all_prot).reset_index(drop=True)
 all_prot=all_prot.drop_duplicates(keep=False)
+all_prot.to_csv('C:/Users/blues/Desktop/PPI/All_CSV/all_prot.csv')
